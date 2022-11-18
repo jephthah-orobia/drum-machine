@@ -41,6 +41,7 @@ class DrumMachine extends Component {
 
   handleMasterVolumeChange = (v) => {
     this.setState({ masterVolume: v });
+    console.log(this.state.masterVolume);
   };
 
   render() {

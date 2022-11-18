@@ -13,6 +13,7 @@ class DrumPad extends Component {
   play = () => {
     this.audioRef.current.pause();
     this.audioRef.current.currentTime = 0;
+    this.audioRef.current.volume = this.state.volume * this.props.masterVolume;
 
     this.btnRef.current.classList.add("drum-pad-playing");
     this.audioRef.current.play();
@@ -76,11 +77,7 @@ class DrumPad extends Component {
             className="clip"
             src={this.props.src}
             alt={this.props.name}
-            volume={this.state.volume * this.props.masterVolume}
-          >
-            <source src={this.props.src} alt={this.props.name} />
-            Your browser doeos not support the audio element.
-          </audio>
+          ></audio>
         </button>
       </div>
     );
