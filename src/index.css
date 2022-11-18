@@ -18,11 +18,11 @@ code {
 }
 
 #drum-machine {
-  display: inline-grid;
-  grid-template-rows: 5rem repeat(3, 1fr);
-  grid-template-columns: repeat(3, minmax(20vh, 1fr));
-  gap: 4px;
-  padding: 4px;
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100vw;
 }
 
 .drum-pad {
@@ -58,7 +58,11 @@ code {
   padding: 5px 0;
 }
 
-#drum-machine > div > div > label.d-flex.justify-content-between > div {
+#drum-machine label.d-flex.justify-content-between > div {
   overflow: hidden;
   white-space: nowrap;
+}
+
+label > input {
+  height: 
 }
