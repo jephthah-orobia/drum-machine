@@ -5,8 +5,14 @@ const hotkeysMapping = {};
         document.addEventListener('keydown', (e) => {
             const keyPressed = e.key.toUpperCase();
             if (keyPressed in hotkeysMapping) {
-                hotkeysMapping[keyPressed]();
+                hotkeysMapping[keyPressed][0]();
+            }
+        });
 
+        document.addEventListener('keyup', (e) => {
+            const keyPressed = e.key.toUpperCase();
+            if (keyPressed in hotkeysMapping) {
+                hotkeysMapping[keyPressed][1]();
             }
         });
     }

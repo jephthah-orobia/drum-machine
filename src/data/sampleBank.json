@@ -1,56 +1,67 @@
 {
   "drumkits": {
     "folder": "./samples",
-    "fccDrumKit": {
-      "name": "Fcc DrumKit",
-      "folder": "./samples/fcc_drumkit",
-      "sounds": [
-        {
-          "name": "Heater 1",
-          "hotkey": "Q",
-          "src": "./samples/fcc_drumkit/Heater-1.mp3"
-        },
-        {
-          "name": "Heater 2",
-          "hotkey": "W",
-          "src": "./samples/fcc_drumkit/Heater-2.mp3"
-        },
-        {
-          "name": "Heater 3",
-          "hotkey": "E",
-          "src": "./samples/fcc_drumkit/Heater-3.mp3"
-        },
-        {
-          "name": "Heater 4",
-          "hotkey": "A",
-          "src": "./samples/fcc_drumkit/Heater-4_1.mp3"
-        },
-        {
-          "name": "Clap",
-          "hotkey": "S",
-          "src": "./samples/fcc_drumkit/Clap.mp3"
-        },
-        {
-          "name": "Open-HH",
-          "hotkey": "D",
-          "src": "./samples/fcc_drumkit/Open-HH.mp3"
-        },
-        {
-          "name": "Kick-n'-Hat",
-          "hotkey": "Z",
-          "src": "./samples/fcc_drumkit/Kick_n_Hat.mp3"
-        },
-        {
-          "name": "Kick",
-          "hotkey": "X",
-          "src": "./samples/fcc_drumkit/RP4_KICK_1.mp3"
-        },
-        {
-          "name": "Closed-HH",
-          "hotkey": "C",
-          "src": "./samples/fcc_drumkit/Closed_HH.mp3"
-        }
-      ]
-    }
+    "collection": [
+      {
+        "name": "Fcc DrumKit",
+        "folder": "./samples/fcc_drumkit",
+        "sounds": [
+          {
+            "name": "Heater 1",
+            "hotkey": "Q",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Heater-1.mp3"
+          },
+          {
+            "name": "Heater 2",
+            "hotkey": "W",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Heater-2.mp3"
+          },
+          {
+            "name": "Heater 3",
+            "hotkey": "E",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Heater-3.mp3"
+          },
+          {
+            "name": "Heater 4",
+            "hotkey": "A",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Heater-4_1.mp3"
+          },
+          {
+            "name": "Clap",
+            "hotkey": "S",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Clap.mp3"
+          },
+          {
+            "name": "Open-HH",
+            "hotkey": "D",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Open-HH.mp3"
+          },
+          {
+            "name": "Kick-n'-Hat",
+            "hotkey": "Z",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Kick_n_Hat.mp3"
+          },
+          {
+            "name": "Kick",
+            "hotkey": "X",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/RP4_KICK_1.mp3"
+          },
+          {
+            "name": "Closed-HH",
+            "hotkey": "C",
+            "volume": 1.0,
+            "src": "./samples/fcc_drumkit/Closed_HH.mp3"
+          }
+        ]
+      }
+    ]
   }
 }
