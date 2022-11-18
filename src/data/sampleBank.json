@@ -61,6 +61,52 @@
             "src": "./samples/fcc_drumkit/Closed_HH.mp3"
           }
         ]
+      },
+      {
+        "name": "Electro Kit",
+        "folder": "./samples/Boy In A Band Electro Kit",
+        "sounds": [
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_clap_1.wav",
+            "name": "Clap 1",
+            "hotkey": "J"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_clap_2.wav",
+            "name": "Clap 2",
+            "hotkey": "H"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_clap_3.wav",
+            "name": "Clap 3",
+            "hotkey": "N"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_clap_4.wav",
+            "name": "Clap 4",
+            "hotkey": "B"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_clap_5.wav",
+            "name": "Clap 5",
+            "hotkey": "U"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_hat_1.wav",
+            "name": "Hat 1",
+            "hotkey": ";"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_hat_2.wav",
+            "name": "Hat 2",
+            "hotkey": "P"
+          },
+          {
+            "src": "./samples/Boy In A Band Electro Kit/biab_electro_hat_1.wav",
+            "name": "Hat 3",
+            "hotkey": "O"
+          }
+        ]
       }
     ]
   }
