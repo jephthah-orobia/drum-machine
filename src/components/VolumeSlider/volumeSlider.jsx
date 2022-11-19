@@ -11,27 +11,29 @@ class VolumeSlider extends Component {
 
   handleNumberChange = (e) => {
     let newVolume = parseFloat((e.target.value / 100).toFixed(2));
+    newVolume = newVolume < 0 ? 0 : newVolume > 100 ? 100 : newVolume;
     this.setState({ volume: newVolume });
     if ("onVolumeChange" in this.props) this.props.onVolumeChange(newVolume);
   };
 
   render() {
     return (
-      <div
-        className="d-grid"
-        style={this.props.style}
-        onMouseUp={this.handleOnMouseUp}
-        onMouseMove={this.handleOnMouseMove}
-      >
-        <label className="d-flex justify-content-between">
-          <div>{this.props.label}</div>
+      <div className="d-flex flex-column" style={this.props.style}>
+        <label className="d-flex flex-row justify-content-between flex-nowrap align-middle">
+          <div className="flex-fill flex-grow-1 align-middle d-inline-block text-truncate mr-2">
+            {this.props.label}
+          </div>
           <input
-            className="d-inline col-6 mx-1"
-            type="number"
+            type="text"
             value={this.state.volume * 100}
-            max="100"
-            min="0"
-            step={1}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            style={{
+              minWidth: "2rem",
+              maxWidth: "2rem",
+              borderWidth: "1px",
+              padding: 1,
+            }}
             onChange={this.handleNumberChange}
           />
         </label>

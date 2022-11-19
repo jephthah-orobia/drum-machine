@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import DrumPad from "./components/DrumPad";
+import hotkeysMapping from "./components/keyboardEventsRouter";
 import VolumeSlider from "./components/VolumeSlider/volumeSlider";
 import * as sampleBankJSON from "./data/sampleBank.json";
+import { GetDivisors } from "./modules/MathExt";
 
 const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
 /***
@@ -30,24 +32,29 @@ class DrumMachine extends Component {
     masterVolume: 1.0,
     sustain: true,
     showSlider: true,
+    rowLimit: 3,
   };
 
+  //handles change of drumkit.
   handleOnSelectChange = (e) => {
+    for (let hotkey in hotkeysMapping) delete hotkeysMapping[hotkey];
     this.setState({
       currentBank: drumkits.collection[e.target.value].name,
       currentSounds: drumkits.collection[e.target.value].sounds,
+      rowLimit: GetDivisors(
+        drumkits.collection[e.target.value].sounds.length
+      ).sort((a, b) => a[1] / a[0] - b[1] / b[0])[0][1],
     });
   };
 
   handleMasterVolumeChange = (v) => {
     this.setState({ masterVolume: v });
-    console.log(this.state.masterVolume);
   };
 
   render() {
     return (
       <React.Fragment>
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-row justify-content-between align-items-stretch">
           <select onChange={this.handleOnSelectChange} className="m-1 h5">
             {drumkits.collection.map((item, i) => (
               <option key={i} value={i}>
@@ -72,11 +79,10 @@ class DrumMachine extends Component {
             {!this.state.showSlider && "Show Controls"}
             {this.state.showSlider && "Hide Controls"}
           </label>
-        </div>
-        <div className="d-flex flex-column">
+
           <div
             id="display"
-            className="row card text-success text-center m-1 h4"
+            className="row card text-success text-center m-1 h4 flex-fill"
           >
             {this.state.currentlyPlaying}
           </div>
@@ -103,30 +109,33 @@ class DrumMachine extends Component {
           onVolumeChange={this.handleMasterVolumeChange}
           label="Master Volume"
         />
-        {this.state.currentSounds.map((item, index) => (
-          <DrumPad
-            key={index}
-            index={index}
-            src={item.src}
-            name={item.name}
-            hotkey={item.hotkey}
-            masterVolume={this.state.masterVolume}
-            sustain={this.state.sustain}
-            showSlider={this.state.showSlider}
-            onPlay={() =>
-              this.setState({
-                currentlyPlaying: item.name,
-              })
-            }
-            onEnd={() =>
-              this.setState((S) =>
-                !S.currentlyPlaying.includes(item.name)
-                  ? S
-                  : { currentlyPlaying: "- - -" }
-              )
-            }
-          />
-        ))}
+        <div>
+          {this.state.currentSounds.map((item, index) => (
+            <DrumPad
+              key={index}
+              index={index}
+              src={item.src}
+              name={item.name}
+              hotkey={item.hotkey}
+              masterVolume={this.state.masterVolume}
+              sustain={this.state.sustain}
+              showSlider={this.state.showSlider}
+              rowLimit={this.state.rowLimit}
+              onPlay={() =>
+                this.setState({
+                  currentlyPlaying: item.name,
+                })
+              }
+              onEnd={() =>
+                this.setState((S) =>
+                  !S.currentlyPlaying.includes(item.name)
+                    ? S
+                    : { currentlyPlaying: "- - -" }
+                )
+              }
+            />
+          ))}
+        </div>
       </React.Fragment>
     );
   }
