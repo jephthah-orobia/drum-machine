@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import DrumPad from "./components/DrumPad";
-import hotkeysMapping from "./components/keyboardEventsRouter";
 import VolumeSlider from "./components/VolumeSlider/volumeSlider";
+import DropDown from "./components/DropDown/DropDown";
 import * as sampleBankJSON from "./data/sampleBank.json";
-import { GetDivisors } from "./modules/MathExt";
 
 const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
 /***
@@ -32,18 +31,13 @@ class DrumMachine extends Component {
     masterVolume: 1.0,
     sustain: true,
     showSlider: true,
-    rowLimit: 3,
   };
 
   //handles change of drumkit.
-  handleOnSelectChange = (e) => {
-    for (let hotkey in hotkeysMapping) delete hotkeysMapping[hotkey];
+  handleOnDrumkitChange = (i) => {
     this.setState({
-      currentBank: drumkits.collection[e.target.value].name,
-      currentSounds: drumkits.collection[e.target.value].sounds,
-      rowLimit: GetDivisors(
-        drumkits.collection[e.target.value].sounds.length
-      ).sort((a, b) => a[1] / a[0] - b[1] / b[0])[0][1],
+      currentBank: drumkits.collection[i].name,
+      currentSounds: drumkits.collection[i].sounds,
     });
   };
 
@@ -55,13 +49,11 @@ class DrumMachine extends Component {
     return (
       <React.Fragment>
         <div className="d-flex flex-row justify-content-between align-items-stretch">
-          <select onChange={this.handleOnSelectChange} className="m-1 h5">
-            {drumkits.collection.map((item, i) => (
-              <option key={i} value={i}>
-                {item.name}
-              </option>
-            ))}
-          </select>
+          <DropDown
+            onChange={this.handleOnDrumkitChange}
+            selectedIndex={0}
+            options={drumkits.collection.map((item) => item.name)}
+          />
           <input
             type="checkbox"
             className="btn-check"
