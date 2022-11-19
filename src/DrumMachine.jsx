@@ -3,6 +3,9 @@ import DrumPad from "./components/DrumPad/DrumPad";
 import VolumeSlider from "./components/VolumeSlider/volumeSlider";
 import DropDown from "./components/DropDown/DropDown";
 import * as sampleBankJSON from "./data/sampleBank.json";
+import ToggleButton from "./components/ToggleButton/ToggleButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import hotkeysMapping from "./components/keyboardEventsRouter";
 
 const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
@@ -27,16 +30,16 @@ const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
 class DrumMachine extends Component {
   state = {
     currentDrumKit: drumkits.collection[0].name,
-    currentSounds: drumkits.collection[0].sounds,
+    currentSounds: [...drumkits.collection[0].sounds],
     currentlyPlaying: "- - -",
-    masterVolume: 1.0,
+    masterVolume: 0.4,
     sustain: true,
     showSlider: true,
+    power: true,
   };
 
   //handles change of drumkit.
   handleOnDrumkitChange = (i) => {
-    //this.state.currentSounds.forEach((s) => delete hotkeysMapping[s.hotkey]);
     this.setState({
       currentDrumKit: drumkits.collection[i].name,
       currentSounds: [...drumkits.collection[i].sounds],
@@ -55,60 +58,73 @@ class DrumMachine extends Component {
 
   handleOnEnd = (name) => {
     this.setState((S) =>
-      !S.currentlyPlaying.includes(name) ? S : { currentlyPlaying: "- - -" }
+      S.currentlyPlaying !== name ? S : { currentlyPlaying: "- - -" }
     );
+  };
+
+  handleSustainToggleChange = (e) => {
+    this.setState({ sustain: e.target.checked });
+    document.body.focus();
+  };
+
+  handleVolumesToggleChange = (e) => {
+    this.setState({ showSlider: e.target.checked });
+    document.body.focus();
+  };
+
+  handlePowerToggleChange = (e) => {
+    let checkedValue = e.target.checked;
+    this.setState({ power: checkedValue });
+    document.querySelectorAll(".btn, .drum-pad, input").forEach((elem) => {
+      if (elem !== e.target) elem.disabled = !checkedValue;
+    });
+    hotkeysMapping.enabled = checkedValue;
+    document.body.focus();
   };
 
   render() {
     return (
       <React.Fragment>
         <div className="d-flex flex-row justify-content-between align-items-stretch flex-wrap">
+          <ToggleButton
+            id="PowerToggle"
+            isTrue={this.state.power}
+            onChange={this.handlePowerToggleChange}
+            labelWhenFalse={<FontAwesomeIcon icon={faPowerOff} />}
+            labelWhenTrue={<FontAwesomeIcon icon={faPowerOff} />}
+            btnCLasses="btn-outline-success m-1 flex-fill flex-md-grow-0"
+          />
           <DropDown
             onChange={this.handleOnDrumkitChange}
             selectedIndex={0}
             options={drumkits.collection.map((item) => item.name)}
+            containerClassName="text-bg-dark my-0 py-0 flex-fill flex-sm-grow-0"
+            btnClassName="btn-primary py-0 my-0"
+            arrowClassName="btn-primary my-0 py-0"
           />
 
           <div
             id="display"
-            className="row card text-success text-center m-1 h4 flex-fill"
+            className="btn btn-info text-center m-1 h4 flex-fill flex-grow-1"
           >
             {this.state.currentlyPlaying}
           </div>
-          <input
-            type="checkbox"
-            className="btn-check"
-            id="btn-check-outlined"
-            checked={this.state.sustain}
-            onChange={(e) => {
-              this.setState({ sustain: e.target.checked });
-            }}
-            autoComplete="off"
+          <ToggleButton
+            id="SustainToggle"
+            isTrue={this.state.sustain}
+            onChange={this.handleSustainToggleChange}
+            labelWhenFalse="SUSTAIN"
+            labelWhenTrue="SUSTAIN"
+            btnCLasses="btn-outline-warning m-1 flex-fill flex-md-grow-0"
           />
-          <label
-            className="btn btn-outline-primary m-1"
-            htmlFor="btn-check-outlined"
-          >
-            {!this.state.sustain && "Turn on Sustain"}
-            {this.state.sustain && "Turn off Sustain"}
-          </label>
-          <input
-            type="checkbox"
-            className="btn-check"
-            id="btn-showSlider"
-            checked={this.state.showSlider}
-            onChange={(e) => {
-              this.setState({ showSlider: e.target.checked });
-            }}
-            autoComplete="off"
+          <ToggleButton
+            id="VolumesToggle"
+            isTrue={this.state.showSlider}
+            onChange={this.handleVolumesToggleChange}
+            labelWhenFalse="Show Controls"
+            labelWhenTrue="Hide Controls"
+            btnCLasses="btn-outline-warning m-1 flex-fill flex-md-grow-0"
           />
-          <label
-            className="btn btn-outline-primary m-1"
-            htmlFor="btn-showSlider"
-          >
-            {!this.state.showSlider && "Show Controls"}
-            {this.state.showSlider && "Hide Controls"}
-          </label>
         </div>
         <VolumeSlider
           volume={this.state.masterVolume}

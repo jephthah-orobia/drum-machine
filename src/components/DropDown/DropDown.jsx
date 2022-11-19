@@ -21,23 +21,26 @@ class DropDown extends Component {
 
   render() {
     return (
-      <div className="btn-group text-bg-dark p0">
+      <div className={"btn-group " + this.props.containerClassName}>
         <button
           type="button"
-          className={"btn btn-primary " + this.props.className}
+          className={"btn " + this.props.btnClassName}
           onClick={this.props.onCurrentClick}
         >
           {this.props.options[this.state.current]}
         </button>
         <button
           type="button"
-          className="btn btn-primary dropdown-toggle dropdown-toggle-split"
+          className={
+            "btn dropdown-toggle dropdown-toggle-split " +
+            this.props.arrowClassName
+          }
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           <span className="visually-hidden">Toggle Dropdown</span>
         </button>
-        <ul className="dropdown-menu">
+        <ul className={"dropdown-menu " + this.props.dropdownClassName}>
           {this.props.options
             .map((item, i) => (
               <li key={i}>

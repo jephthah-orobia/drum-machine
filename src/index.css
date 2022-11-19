@@ -11,7 +11,8 @@
 }
 
 #display {
-  min-width: 8rem;
+  min-width: 13rem;
+  cursor: default;
 }
 
 .drum-pad-container {

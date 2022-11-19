@@ -24,13 +24,14 @@ class VolumeSlider extends Component {
             {this.props.label}
           </div>
           <input
+            className="form-control text-bg-secondary ms-1 px-1 text-center"
             type="text"
             value={this.state.volume * 100}
             inputMode="numeric"
             pattern="[0-9]*"
             style={{
-              minWidth: "2rem",
-              maxWidth: "2rem",
+              minWidth: "2.1rem",
+              maxWidth: "2.4rem",
               borderWidth: "1px",
               padding: 1,
             }}

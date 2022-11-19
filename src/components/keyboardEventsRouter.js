@@ -1,10 +1,10 @@
-const hotkeysMapping = {};
+const hotkeysMapping = { enabled: true };
 
 (() => {
     window.onload = function () {
         document.addEventListener('keydown', (e) => {
             const keyPressed = e.key.toUpperCase();
-            if (keyPressed in hotkeysMapping) {
+            if (keyPressed in hotkeysMapping && hotkeysMapping.enabled) {
                 hotkeysMapping[keyPressed][0]();
             }
         });

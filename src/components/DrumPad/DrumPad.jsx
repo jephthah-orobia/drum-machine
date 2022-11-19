@@ -38,7 +38,7 @@ class DrumPad extends Component {
 
   ended = () => {
     this.btnRef.current.classList.remove("drum-pad-playing");
-    this.props.onEnd();
+    this.props.onEnd(this.props.name);
   };
 
   handleVolumeChange = (newVol) => {
