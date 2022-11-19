@@ -3,7 +3,6 @@ import React, { Component } from "react";
 class DropDown extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     if (
       "options" in props &&
       "selectedIndex" in props &&
