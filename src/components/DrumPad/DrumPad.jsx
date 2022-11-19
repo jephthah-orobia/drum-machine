@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import VolumeSlider from "./VolumeSlider/volumeSlider";
-import keysMapping from "./keyboardEventsRouter";
+import VolumeSlider from "../VolumeSlider/volumeSlider";
+import keysMapping from "../keyboardEventsRouter";
 
 class DrumPad extends Component {
   state = {
@@ -10,29 +10,6 @@ class DrumPad extends Component {
   audioRef = React.createRef();
   btnRef = React.createRef();
 
-  play = () => {
-    this.audioRef.current.pause();
-    this.audioRef.current.currentTime = 0;
-    this.audioRef.current.volume = this.state.volume * this.props.masterVolume;
-
-    this.btnRef.current.classList.add("drum-pad-playing");
-    this.audioRef.current.play();
-    this.props.onPlay();
-  };
-
-  forceEnd = () => {
-    if (!this.props.sustain) {
-      this.audioRef.current.pause();
-      this.audioRef.current.currentTime = 0;
-      this.ended();
-    }
-  };
-
-  ended = () => {
-    this.btnRef.current.classList.remove("drum-pad-playing");
-    this.props.onEnd();
-  };
-
   componentDidMount() {
     keysMapping[this.props.hotkey] = [this.play, this.forceEnd];
   }
@@ -41,6 +18,29 @@ class DrumPad extends Component {
     delete keysMapping[this.props.hotkey];
   }
 
+  play = () => {
+    this.audioRef.current.pause();
+    this.audioRef.current.currentTime = 0;
+    this.audioRef.current.volume = this.state.volume * this.props.masterVolume;
+
+    this.btnRef.current.classList.add("drum-pad-playing");
+    this.audioRef.current.play();
+    this.props.onPlay(this.props.name);
+  };
+
+  forceEnd = () => {
+    if (!this.props.sustain) {
+      this.audioRef.current.pause();
+      this.audioRef.current.currentTime = 0;
+      this.ended(this.props.name);
+    }
+  };
+
+  ended = () => {
+    this.btnRef.current.classList.remove("drum-pad-playing");
+    this.props.onEnd();
+  };
+
   handleVolumeChange = (newVol) => {
     this.setState({ volume: newVol });
     this.audioRef.current.volume = newVol * this.props.masterVolume;
@@ -48,13 +48,7 @@ class DrumPad extends Component {
 
   render() {
     return (
-      <div
-        className="drum-pad-container"
-        style={{
-          gridColumn:
-            ((this.props.index + 1) % 3) + " / " + ((this.props.index + 2) % 3),
-        }}
-      >
+      <div className="drum-pad-container">
         {this.props.showSlider && (
           <VolumeSlider
             volume={this.state.volume}

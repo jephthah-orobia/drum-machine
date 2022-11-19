@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import DrumPad from "./components/DrumPad";
+import DrumPad from "./components/DrumPad/DrumPad";
 import VolumeSlider from "./components/VolumeSlider/volumeSlider";
 import DropDown from "./components/DropDown/DropDown";
 import * as sampleBankJSON from "./data/sampleBank.json";
+import hotkeysMapping from "./components/keyboardEventsRouter";
 
 const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
 /***
@@ -25,7 +26,7 @@ const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
 
 class DrumMachine extends Component {
   state = {
-    currentBank: drumkits.collection[0].name,
+    currentDrumKit: drumkits.collection[0].name,
     currentSounds: drumkits.collection[0].sounds,
     currentlyPlaying: "- - -",
     masterVolume: 1.0,
@@ -35,9 +36,10 @@ class DrumMachine extends Component {
 
   //handles change of drumkit.
   handleOnDrumkitChange = (i) => {
+    //this.state.currentSounds.forEach((s) => delete hotkeysMapping[s.hotkey]);
     this.setState({
-      currentBank: drumkits.collection[i].name,
-      currentSounds: drumkits.collection[i].sounds,
+      currentDrumKit: drumkits.collection[i].name,
+      currentSounds: [...drumkits.collection[i].sounds],
     });
   };
 
@@ -45,32 +47,27 @@ class DrumMachine extends Component {
     this.setState({ masterVolume: v });
   };
 
+  handleOnPlay = (name) => {
+    this.setState({
+      currentlyPlaying: name,
+    });
+  };
+
+  handleOnEnd = (name) => {
+    this.setState((S) =>
+      !S.currentlyPlaying.includes(name) ? S : { currentlyPlaying: "- - -" }
+    );
+  };
+
   render() {
     return (
       <React.Fragment>
-        <div className="d-flex flex-row justify-content-between align-items-stretch">
+        <div className="d-flex flex-row justify-content-between align-items-stretch flex-wrap">
           <DropDown
             onChange={this.handleOnDrumkitChange}
             selectedIndex={0}
             options={drumkits.collection.map((item) => item.name)}
           />
-          <input
-            type="checkbox"
-            className="btn-check"
-            id="btn-showSlider"
-            checked={this.state.showSlider}
-            onChange={(e) => {
-              this.setState({ showSlider: e.target.checked });
-            }}
-            autoComplete="off"
-          />
-          <label
-            className="btn btn-outline-primary m-1"
-            htmlFor="btn-showSlider"
-          >
-            {!this.state.showSlider && "Show Controls"}
-            {this.state.showSlider && "Hide Controls"}
-          </label>
 
           <div
             id="display"
@@ -95,16 +92,33 @@ class DrumMachine extends Component {
             {!this.state.sustain && "Turn on Sustain"}
             {this.state.sustain && "Turn off Sustain"}
           </label>
+          <input
+            type="checkbox"
+            className="btn-check"
+            id="btn-showSlider"
+            checked={this.state.showSlider}
+            onChange={(e) => {
+              this.setState({ showSlider: e.target.checked });
+            }}
+            autoComplete="off"
+          />
+          <label
+            className="btn btn-outline-primary m-1"
+            htmlFor="btn-showSlider"
+          >
+            {!this.state.showSlider && "Show Controls"}
+            {this.state.showSlider && "Hide Controls"}
+          </label>
         </div>
         <VolumeSlider
           volume={this.state.masterVolume}
           onVolumeChange={this.handleMasterVolumeChange}
           label="Master Volume"
         />
-        <div>
+        <div className="d-flex flex-row flex-wrap justify-content-around">
           {this.state.currentSounds.map((item, index) => (
             <DrumPad
-              key={index}
+              key={item.name}
               index={index}
               src={item.src}
               name={item.name}
@@ -112,19 +126,8 @@ class DrumMachine extends Component {
               masterVolume={this.state.masterVolume}
               sustain={this.state.sustain}
               showSlider={this.state.showSlider}
-              rowLimit={this.state.rowLimit}
-              onPlay={() =>
-                this.setState({
-                  currentlyPlaying: item.name,
-                })
-              }
-              onEnd={() =>
-                this.setState((S) =>
-                  !S.currentlyPlaying.includes(item.name)
-                    ? S
-                    : { currentlyPlaying: "- - -" }
-                )
-              }
+              onPlay={this.handleOnPlay}
+              onEnd={this.handleOnEnd}
             />
           ))}
         </div>

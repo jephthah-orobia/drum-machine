@@ -10,6 +10,10 @@
   width: 80vw;
 }
 
+#display {
+  min-width: 8rem;
+}
+
 .drum-pad-container {
   display: inline-flex;
   flex-direction: column;
