@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import DrumPad from "./components/DrumPad/DrumPad";
 import VolumeSlider from "./components/VolumeSlider/volumeSlider";
 import DropDown from "./components/DropDown/DropDown";
-import * as sampleBankJSON from "./data/sampleBank.json";
+import drumkits from "./data/sampleBank";
 import ToggleButton from "./components/ToggleButton/ToggleButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import hotkeysMapping from "./components/keyboardEventsRouter";
 
-const { drumkits } = sampleBankJSON; // acquire drumkits configuration.
+// acquire drumkits configuration.
 /***
  *  drumkits is an array of "drumkit".
  *  a *drumkit* is basically just a collection of sound samples of each percussion in a drum set.
@@ -33,10 +33,27 @@ class DrumMachine extends Component {
     currentSounds: [...drumkits.collection[0].sounds],
     currentlyPlaying: "- - -",
     masterVolume: 0.4,
-    sustain: true,
+    sustain: false,
     showSlider: true,
     power: true,
   };
+
+  componentDidMount() {
+    hotkeysMapping[" "] = [
+      () => {
+        if (!this.state.sustain) this.setState({ sustain: true });
+        document.body.focus();
+      },
+      () => {
+        if (this.state.sustain) this.setState({ sustain: false });
+        document.body.focus();
+      },
+    ];
+  }
+
+  componentWillUnmount() {
+    delete hotkeysMapping[" "];
+  }
 
   //handles change of drumkit.
   handleOnDrumkitChange = (i) => {
@@ -84,7 +101,10 @@ class DrumMachine extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div
+        id="drum-machine"
+        className="position-absolute top-50 start-50 translate-middle-x"
+      >
         <div className="d-flex flex-row justify-content-between align-items-stretch flex-wrap">
           <ToggleButton
             id="PowerToggle"
@@ -129,6 +149,13 @@ class DrumMachine extends Component {
         <VolumeSlider
           volume={this.state.masterVolume}
           onVolumeChange={this.handleMasterVolumeChange}
+          volumeDisplayClassName="form-control text-bg-info ms-1 px-1 fs-6 text-center border-info fw-bolder"
+          sliderClassName="masterVolumeSlider"
+          labelStyle={{
+            fontWeight: "bolder",
+            color: "var(--bs-info)",
+            fontSize: "1.5rem",
+          }}
           label="Master Volume"
         />
         <div className="d-flex flex-row flex-wrap justify-content-around">
@@ -147,7 +174,7 @@ class DrumMachine extends Component {
             />
           ))}
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

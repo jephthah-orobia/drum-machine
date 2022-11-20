@@ -1,81 +1,83 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import VolumeSlider from "../VolumeSlider/volumeSlider";
 import keysMapping from "../keyboardEventsRouter";
 
-class DrumPad extends Component {
-  state = {
-    volume: 1,
-  };
+const DrumPad = (props) => {
+  const [volume, setVolume] = useState(1);
+  const [padIsPressed, setPadIsPressed] = useState(false);
 
-  audioRef = React.createRef();
-  btnRef = React.createRef();
+  const audioRef = React.createRef();
+  const btnRef = React.createRef();
+  useEffect(() => {
+    keysMapping[props.hotkey] = [play, forceEnd];
+    return () => {
+      delete keysMapping[props.hotkey];
+    };
+  });
 
-  componentDidMount() {
-    keysMapping[this.props.hotkey] = [this.play, this.forceEnd];
-  }
-
-  componentWillUnmount() {
-    delete keysMapping[this.props.hotkey];
-  }
-
-  play = () => {
-    this.audioRef.current.pause();
-    this.audioRef.current.currentTime = 0;
-    this.audioRef.current.volume = this.state.volume * this.props.masterVolume;
-
-    this.btnRef.current.classList.add("drum-pad-playing");
-    this.audioRef.current.play();
-    this.props.onPlay(this.props.name);
-  };
-
-  forceEnd = () => {
-    if (!this.props.sustain) {
-      this.audioRef.current.pause();
-      this.audioRef.current.currentTime = 0;
-      this.ended(this.props.name);
+  const play = () => {
+    if (!padIsPressed) {
+      setPadIsPressed(true);
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.volume = volume * props.masterVolume;
+      btnRef.current.classList.add("drum-pad-playing");
+      audioRef.current.play();
+      props.onPlay(props.name);
     }
   };
 
-  ended = () => {
-    this.btnRef.current.classList.remove("drum-pad-playing");
-    this.props.onEnd(this.props.name);
+  const forceEnd = () => {
+    if (!props.sustain) {
+      //setPadIsPressed(false);
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      ended(props.name);
+    }
+    setPadIsPressed(false);
+    btnRef.current.classList.remove("drum-pad-playing");
   };
 
-  handleVolumeChange = (newVol) => {
-    this.setState({ volume: newVol });
-    this.audioRef.current.volume = newVol * this.props.masterVolume;
+  const ended = () => {
+    props.onEnd(props.name);
   };
 
-  render() {
-    return (
-      <div className="drum-pad-container">
-        {this.props.showSlider && (
-          <VolumeSlider
-            volume={this.state.volume}
-            label={this.props.name}
-            onVolumeChange={(newVol) => this.setState({ volume: newVol })}
-          />
-        )}
-        <button
-          className="drum-pad mx-auto"
-          onMouseDown={this.play}
-          onMouseUp={this.forceEnd}
-          ref={this.btnRef}
-          id={this.props.name.replace(" ", "-")}
-        >
-          {this.props.hotkey}
-          <audio
-            ref={this.audioRef}
-            id={this.props.hotkey}
-            onEnded={this.ended}
-            className="clip"
-            src={this.props.src}
-            alt={this.props.name}
-          ></audio>
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="drum-pad-container">
+      {props.showSlider && (
+        <VolumeSlider
+          volume={volume}
+          label={props.name}
+          onVolumeChange={setVolume}
+          volumeDisplayClassName="form-control text-bg-secondary fs-6 ms-1 px-1 text-center border-secondary"
+          sliderClassName="drum-pad-volume"
+          labelStyle={{
+            fontSize: "0.8rem",
+            verticalAlign: "middle",
+            marginTop: "0.3rem",
+            minWidth: '30px'
+          }}
+        />
+      )}
+      <button
+        className="drum-pad mx-auto"
+        onMouseDown={play}
+        onMouseUp={forceEnd}
+        ref={btnRef}
+        id={props.name.replace(" ", "-")}
+      >
+        {props.hotkey}
+        <audio
+          ref={audioRef}
+          id={props.hotkey}
+          onEnded={ended}
+          className="clip"
+          src={props.src}
+          alt={props.name}
+        ></audio>
+      </button>
+    </div>
+  );
+};
 
 export default DrumPad;

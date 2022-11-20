@@ -44,7 +44,10 @@ class DropDown extends Component {
           {this.props.options
             .map((item, i) => (
               <li key={i}>
-                <button className="btn" onClick={() => this.handleItemClick(i)}>
+                <button
+                  className="btn text-truncate"
+                  onClick={() => this.handleItemClick(i)}
+                >
                   {item}
                 </button>
               </li>

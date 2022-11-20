@@ -7,7 +7,7 @@ print(""""
 ***********************************************************
 """)
 
-KBOARD = "QWERTYUIOP[]ASDFGHJKL;'|ZXCVBNM,.?"
+KBOARD = "QWERTYUIOP[]ASDFGHJKL;'\\|ZXCVBNM,.?1234567890-=` "
     
 
 def ask_to_quit():

@@ -4,14 +4,24 @@ import './index.css';
 import DrumMachine from './DrumMachine';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js'
+import Footer from './components/Footer/Footer';
 //import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('drum-machine'));
+/* const root = ReactDOM.createRoot(document.getElementById('drum-machine'));
 root.render(
   <React.StrictMode>
     <DrumMachine />
   </React.StrictMode>
-);
+); */
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <DrumMachine />
+    <Footer />
+  </React.StrictMode>
+)
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

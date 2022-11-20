@@ -2,12 +2,33 @@
   box-sizing: border-box;
 }
 
+footer {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 2rem;
+  background-color: var(--bs-light);
+}
+
+footer a,
+footer a:hover,
+footer a:active,
+footer a:visited {
+  text-decoration: none;
+}
+
+footer > span {
+  float: right;
+  padding-right: 1rem;
+}
+
 #drum-machine {
   display: inline-flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  width: 80vw;
+  width: 95vw;
 }
 
 #display {
@@ -15,23 +36,27 @@
   cursor: default;
 }
 
+.masterVolumeSlider {
+  accent-color: var(--bs-info);
+}
+
 .drum-pad-container {
   display: inline-flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   align-content: center;
   background-color: var(--bs-dark);
   border-radius: 5px;
-  padding-bottom: 7px 0;
+  padding-bottom: 0px;
   margin: 5px;
-  width: 100px;
+  width: 11vw;
+  min-width: 100px;
 }
 
 .drum-pad {
   aspect-ratio: 1/1;
   width: 100%;
-  max-width: 18vh;
-  max-height: 18vh;
   border-radius: 10%;
   margin-bottom: 6px;
   box-shadow: 0px 5px 2px 2px rgba(0, 0, 100, 0.5);
@@ -47,4 +72,10 @@
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 100, 0.5);
   margin-top: 5px;
   margin-bottom: 1px;
+}
+
+.drum-pad-volume {
+  min-width: 90px;
+  width: 97%;
+  accent-color: var(--bs-secondary);
 }

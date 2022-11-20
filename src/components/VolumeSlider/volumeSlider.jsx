@@ -20,11 +20,14 @@ class VolumeSlider extends Component {
     return (
       <div className="d-flex flex-column" style={this.props.style}>
         <label className="d-flex flex-row justify-content-between flex-nowrap align-middle">
-          <div className="flex-fill flex-grow-1 align-middle d-inline-block text-truncate mr-2">
+          <div
+            className="flex-fill flex-grow-1 align-middle d-inline-block text-truncate"
+            style={this.props.labelStyle}
+          >
             {this.props.label}
           </div>
           <input
-            className="form-control text-bg-secondary ms-1 px-1 text-center"
+            className={this.props.volumeDisplayClassName} //form-control text-bg-secondary ms-1 px-1 text-center
             type="text"
             value={this.state.volume * 100}
             inputMode="numeric"
@@ -39,6 +42,7 @@ class VolumeSlider extends Component {
           />
         </label>
         <input
+          className={this.props.sliderClassName}
           type="range"
           value={this.state.volume * 100}
           max={100}
